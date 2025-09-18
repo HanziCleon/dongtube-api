@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DongTube</title>
+    <link rel="icon" type="image/png" href="https://b.top4top.io/p_35449hn0x0.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .anime-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .anime-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .anime-card:hover {
+            border-color: #007bff;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,123,255,0.2);
+        }
+        
+        .anime-card h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .anime-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .anime-description {
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        .episodes-count {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-size: 18px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .episode-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .episode-list {
+            margin-top: 15px;
+        }
+        
+        .episode-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+
+        .search-filter {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-filter input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-form">
+            <h2>🔐 Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none;">
+        <div class="header">
+            <h1>🎌 Admin Dashboard</h1>
+            <p>Kelola koleksi anime dengan JSONBin</p>
+            <button id="logoutBtn" class="btn btn-danger" style="position: absolute; top: 20px; right: 20px;">Logout</button>
+        </div>
+        
+        <div class="content">
+            <!-- Statistics -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3 id="totalAnime">0</h3>
+                    <p>Total Anime</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="ongoingAnime">0</h3>
+                    <p>Ongoing Series</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="completedAnime">0</h3>
+                    <p>Completed Series</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalEpisodes">0</h3>
+                    <p>Total Episodes</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('list')">📋 Daftar Anime</button>
+                <button class="tab" onclick="switchTab('add')">➕ Tambah Anime</button>
+                <button class="tab" onclick="switchTab('edit')">✏️ Edit Anime</button>
+                <button class="tab" onclick="switchTab('manage')">⚙️ Kelola</button>
+            </div>
+            
+            <!-- Alert Container -->
+            <div id="alert-container"></div>
+            
+            <!-- Tab: Daftar Anime -->
+            <div id="tab-list" class="tab-content active">
+                <!-- Search & Filter -->
+                <div class="search-filter">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <input type="text" id="search-input" placeholder="🔍 Cari anime..." style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <select id="filter-status" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                <option value="">Semua Status</option>
+                                <option value="Ongoing">Ongoing</option>
+                                <option value="Complete">Complete</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="sort-by" style="padding: 10px; border: 2px solid #e9ecef; border-radius: 8px;">
+                                <option value="title">Urutkan: Judul</option>
+                                <option value="year">Urutkan: Tahun</option>
+                                <option value="rating">Urutkan: Rating</option>
+                                <option value="episodes">Urutkan: Episode</option>
+                                <option value="newest">Urutkan: Terbaru</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="resetFilter()">🔄 Reset</button>
+                    </div>
+                </div>
+                
+                <div id="loading" class="loading">Memuat data anime...</div>
+                <div id="anime-list" class="anime-list" style="display: none;"></div>
+            </div>
+            
+            <!-- Tab: Tambah Anime -->
+            <div id="tab-add" class="tab-content">
+                <form id="add-form">
+                    <div class="form-group">
+                        <label>📌 Judul Anime</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🖼️ Thumbnail URL</label>
+                        <input type="url" id="thumb">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📊 Status</label>
+                        <select id="status" required>
+                            <option value="">Pilih Status</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📅 Tahun</label>
+                        <input type="number" id="year" min="1900" max="2030">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎭 Genre</label>
+                        <input type="text" id="genre" placeholder="Action, Adventure, Comedy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⭐ Rating</label>
+                        <input type="number" id="rating" step="0.1" min="0" max="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 Deskripsi</label>
+                        <textarea id="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="episode-form">
+                        <h3>📺 Episode</h3>
+                        <div class="form-group">
+                            <label>Judul Episode</label>
+                            <input type="text" id="episode-title" placeholder="Episode 1">
+                        </div>
+                        <div class="form-group">
+                            <label>URL Episode</label>
+                            <input type="url" id="episode-url" placeholder="https://...">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="addEpisode()">Tambah Episode</button>
+                        <div id="episode-list" class="episode-list"></div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn">💾 Simpan Anime</button>
+                        <button type="button" class="btn btn-danger" onclick="resetForm()">🗑️ Reset</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Tab: Edit Anime -->
+            <div id="tab-edit" class="tab-content">
+                <div style="margin-bottom: 20px;">
+                    <label>Pilih Anime untuk Edit:</label>
+                    <select id="edit-select" style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; margin-top: 5px;">
+                        <option value="">-- Pilih Anime --</option>
+                    </select>
+                </div>
+                
+                <form id="edit-form" style="display: none;">
+                    <input type="hidden" id="edit-id">
+                    
+                    <div class="form-group">
+                        <label>📌 Judul Anime</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🖼️ Thumbnail URL</label>
+                        <input type="url" id="edit-thumb">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📊 Status</label>
+                        <select id="edit-status" required>
+                            <option value="">Pilih Status</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📅 Tahun</label>
+                        <input type="number" id="edit-year" min="1900" max="2030">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎭 Genre</label>
+                        <input type="text" id="edit-genre" placeholder="Action, Adventure, Comedy">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>⭐ Rating</label>
+                        <input type="number" id="edit-rating" step="0.1" min="0" max="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📝 Deskripsi</label>
+                        <textarea id="edit-description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="episode-form">
+                        <h3>📺 Episode</h3>
+                        <div id="edit-episode-list" class="episode-list"></div>
+                        <div class="form-group">
+                            <label>Tambah Episode Baru</label>
+                            <input type="text" id="new-episode-title" placeholder="Episode baru">
+                        </div>
+                        <div class="form-group">
+                            <input type="url" id="new-episode-url" placeholder="https://...">
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="addNewEpisode()">Tambah Episode</button>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <button type="submit" class="btn">💾 Update Anime</button>
+                        <button type="button" class="btn btn-danger" onclick="cancelEdit()">❌ Batal</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Tab: Kelola -->
+            <div id="tab-manage" class="tab-content">
+                <h3>🛠️ Pengaturan JSONBin</h3>
+                <div class="form-group">
+                    <label>JSONBin URL</label>
+                    <input type="text" id="jsonbin-url" value="https://api.jsonbin.io/v3/b/68c7fdc9d0ea881f407e85cc">
+                </div>
+                <div class="form-group">
+                    <label>Master Key</label>
+                    <input type="text" id="jsonbin-key" value="$2a$10$PsVzgljojE5fq8qZRmpE4uzMr0K9LArqfmumGVSmNY.P8F2iTKrim">
+                </div>
+                <button class="btn" onclick="testConnection()">🔗 Test Koneksi</button>
+                <button class="btn btn-danger" onclick="clearAllData()">🗑️ Hapus Semua Data</button>
+                <button class="btn btn-success" onclick="exportData()">📤 Export Data</button>
+                <button class="btn" onclick="importData()">📥 Import Data</button>
+                <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin credentials
+        const ADMIN_USERNAME = "admin";
+        const ADMIN_PASSWORD = "hanzyy001";
+        
+        // JSONBin Configuration
+        let JSONBIN_URL = "https://api.jsonbin.io/v3/b/68c7fdc9d0ea881f407e85cc";
+        let JSONBIN_KEY = "$2a$10$PsVzgljojE5fq8qZRmpE4uzMr0K9LArqfmumGVSmNY.P8F2iTKrim";
+        
+        // Global variables
+        let tempEpisodes = [];
+        let editEpisodes = [];
+        let allAnimeData = [];
+        
+        // Check authentication on page load
+        window.addEventListener('load', () => {
+            checkAuth();
+        });
+        
+        function checkAuth() {
+            const isLoggedIn = sessionStorage.getItem('admin_logged_in');
+            if (isLoggedIn === 'true') {
+                showMainContent();
+            } else {
+                showLoginModal();
+            }
+        }
+        
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('mainContainer').style.display = 'none';
+        }
+        
+        function showMainContent() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            loadAnimeList();
+            updateStatistics();
+        }
+        
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('admin_logged_in', 'true');
+                showMainContent();
+                showAlert('Login berhasil!', 'success');
+            } else {
+                showAlert('Username atau password salah!', 'error');
+            }
+        });
+        
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('admin_logged_in');
+            showLoginModal();
+            showAlert('Logout berhasil!', 'success');
+        });
+        
+        // JSONBin API Functions
+        async function getData() {
+            try {
+                const response = await fetch(`${JSONBIN_URL}/latest`, {
+                    headers: { "X-Master-Key": JSONBIN_KEY }
+                });
+                const data = await response.json();
+                return data.record || [];
+            } catch (error) {
+                console.error('Error getting data:', error);
+                showAlert('Gagal mengambil data dari JSONBin', 'error');
+                return [];
+            }
+        }
+        
+        async function updateData(newData) {
+            try {
+                await fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: { 
+                        "X-Master-Key": JSONBIN_KEY, 
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify(newData)
+                });
+                return true;
+            } catch (error) {
+                console.error('Error updating data:', error);
+                showAlert('Gagal menyimpan data ke JSONBin', 'error');
+                return false;
+            }
+        }
+        
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            if (tabName === 'list') {
+                loadAnimeList();
+            } else if (tabName === 'edit') {
+                loadEditOptions();
+            }
+        }
+        
+        // Alert system
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            alertContainer.innerHTML = `<div class="alert ${alertClass}">${message}</div>`;
+            setTimeout(() => alertContainer.innerHTML = '', 3000);
+        }
+        
+        // Load and display anime list
+        async function loadAnimeList() {
+            const loading = document.getElementById('loading');
+            const animeList = document.getElementById('anime-list');
+            
+            loading.style.display = 'block';
+            animeList.style.display = 'none';
+            
+            allAnimeData = await getData();
+            
+            loading.style.display = 'none';
+            animeList.style.display = 'grid';
+            
+            renderAnimeList(allAnimeData);
+            updateStatistics();
+        }
+        
+        function renderAnimeList(data) {
+            const animeList = document.getElementById('anime-list');
+            
+            if (data.length === 0) {
+                animeList.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #6c757d;">Belum ada data anime</p>';
+                return;
+            }
+            
+            animeList.innerHTML = data.map(anime => `
+                <div class="anime-card">
+                    <h3>${anime.title}</h3>
+                    <div class="anime-meta">
+                        <span><strong>Status:</strong> ${anime.status}</span>
+                        <span><strong>Tahun:</strong> ${anime.year || 'N/A'}</span>
+                        <span class="episodes-count">${anime.episodes ? anime.episodes.length : 0} Episode</span>
+                    </div>
+                    <div class="anime-meta">
+                        <span><strong>Genre:</strong> ${anime.genre || 'N/A'}</span>
+                        <span><strong>Rating:</strong> ⭐ ${anime.rating || 'N/A'}</span>
+                    </div>
+                    <div class="anime-description">
+                        ${anime.description || 'Tidak ada deskripsi'}
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="editAnime(${anime.id})" style="margin-right: 10px;">✏️ Edit</button>
+                        <button class="btn btn-danger" onclick="deleteAnime(${anime.id})">🗑️ Hapus</button>
+                        <small style="color: #6c757d; margin-left: 10px;">ID: ${anime.id}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Statistics
+        function updateStatistics() {
+            const totalAnime = allAnimeData.length;
+            const ongoingAnime = allAnimeData.filter(a => a.status === 'Ongoing').length;
+            const completedAnime = allAnimeData.filter(a => a.status === 'Complete').length;
+            const totalEpisodes = allAnimeData.reduce((sum, anime) => sum + (anime.episodes ? anime.episodes.length : 0), 0);
+            
+            document.getElementById('totalAnime').textContent = totalAnime;
+            document.getElementById('ongoingAnime').textContent = ongoingAnime;
+            document.getElementById('completedAnime').textContent = completedAnime;
+            document.getElementById('totalEpisodes').textContent = totalEpisodes;
+        }
+        
+        // Search and filter functions
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value;
+            const sortBy = document.getElementById('sort-by').value;
+            
+            let filteredData = [...allAnimeData];
+            
+            if (searchTerm) {
+                filteredData = filteredData.filter(anime => 
+                    anime.title.toLowerCase().includes(searchTerm) ||
+                    (anime.genre && anime.genre.toLowerCase().includes(searchTerm)) ||
+                    (anime.description && anime.description.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            if (statusFilter) {
+                filteredData = filteredData.filter(anime => anime.status === statusFilter);
+            }
+            
+            filteredData.sort((a, b) => {
+                switch (sortBy) {
+                    case 'title':
+                        return a.title.localeCompare(b.title);
+                    case 'year':
+                        return (b.year || 0) - (a.year || 0);
+                    case 'rating':
+                        return (b.rating || 0) - (a.rating || 0);
+                    case 'episodes':
+                        return (b.episodes?.length || 0) - (a.episodes?.length || 0);
+                    case 'newest':
+                        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderAnimeList(filteredData);
+        }
+        
+        function resetFilter() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('filter-status').value = '';
+            document.getElementById('sort-by').value = 'title';
+            renderAnimeList(allAnimeData);
+        }
+        
+        // Episode management
+        function addEpisode() {
+            const title = document.getElementById('episode-title').value;
+            const url = document.getElementById('episode-url').value;
+            
+            if (!title || !url) {
+                showAlert('Judul dan URL episode wajib diisi', 'error');
+                return;
+            }
+            
+            tempEpisodes.push({
+                num: tempEpisodes.length + 1,
+                title: title,
+                src: url
+            });
+            
+            updateEpisodeList();
+            
+            document.getElementById('episode-title').value = '';
+            document.getElementById('episode-url').value = '';
+        }
+        
+        function updateEpisodeList() {
+            const episodeList = document.getElementById('episode-list');
+            episodeList.innerHTML = tempEpisodes.map((episode, index) => `
+                <div class="episode-item">
+                    <strong>Episode ${episode.num}:</strong> ${episode.title}
+                    <button class="btn btn-danger" style="float: right; padding: 5px 10px; font-size: 12px;" onclick="removeEpisode(${index})">Hapus</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeEpisode(index) {
+            tempEpisodes.splice(index, 1);
+            tempEpisodes.forEach((ep, i) => ep.num = i + 1);
+            updateEpisodeList();
+        }
+        
+        function resetForm() {
+            document.getElementById('add-form').reset();
+            tempEpisodes = [];
+            updateEpisodeList();
+        }
+        
+        // Delete anime
+        async function deleteAnime(id) {
+            if (!confirm('Yakin ingin menghapus anime ini?')) return;
+            
+            const data = await getData();
+            const filteredData = data.filter(anime => anime.id !== id);
+            
+            if (await updateData(filteredData)) {
+                showAlert('Anime berhasil dihapus');
+                loadAnimeList();
+                loadEditOptions();
+            }
+        }
+        
+        // Edit functions
+        async function loadEditOptions() {
+            const data = await getData();
+            const select = document.getElementById('edit-select');
+            select.innerHTML = '<option value="">-- Pilih Anime --</option>';
+            
+            data.forEach(anime => {
+                const option = document.createElement('option');
+                option.value = anime.id;
+                option.textContent = `${anime.title} (${anime.status})`;
+                select.appendChild(option);
+            });
+        }
+        
+        function editAnime(id) {
+            switchTab('edit');
+            document.querySelectorAll('.tab')[2].click();
+            document.getElementById('edit-select').value = id;
+            loadEditForm(id);
+        }
+        
+        async function loadEditForm(id) {
+            if (!id) {
+                document.getElementById('edit-form').style.display = 'none';
+                return;
+            }
+            
+            const data = await getData();
+            const anime = data.find(a => a.id == id);
+            
+            if (!anime) {
+                showAlert('Anime tidak ditemukan', 'error');
+                return;
+            }
+            
+            document.getElementById('edit-id').value = anime.id;
+            document.getElementById('edit-title').value = anime.title;
+            document.getElementById('edit-thumb').value = anime.thumb || '';
+            document.getElementById('edit-status').value = anime.status;
+            document.getElementById('edit-year').value = anime.year || '';
+            document.getElementById('edit-genre').value = anime.genre || '';
+            document.getElementById('edit-rating').value = anime.rating || '';
+            document.getElementById('edit-description').value = anime.description || '';
+            
+            editEpisodes = [...(anime.episodes || [])];
+            updateEditEpisodeList();
+            
+            document.getElementById('edit-form').style.display = 'block';
+        }
+        
+        function updateEditEpisodeList() {
+            const episodeList = document.getElementById('edit-episode-list');
+            episodeList.innerHTML = editEpisodes.map((episode, index) => `
+                <div class="episode-item">
+                    <strong>Episode ${episode.num}:</strong> ${episode.title}
+                    <button class="btn btn-danger" style="float: right; padding: 5px 10px; font-size: 12px;" onclick="removeEditEpisode(${index})">Hapus</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeEditEpisode(index) {
+            editEpisodes.splice(index, 1);
+            editEpisodes.forEach((ep, i) => ep.num = i + 1);
+            updateEditEpisodeList();
+        }
+        
+        function addNewEpisode() {
+            const title = document.getElementById('new-episode-title').value;
+            const url = document.getElementById('new-episode-url').value;
+            
+            if (!title || !url) {
+                showAlert('Judul dan URL episode wajib diisi', 'error');
+                return;
+            }
+            
+            editEpisodes.push({
+                num: editEpisodes.length + 1,
+                title: title,
+                src: url
+            });
+            
+            updateEditEpisodeList();
+            
+            document.getElementById('new-episode-title').value = '';
+            document.getElementById('new-episode-url').value = '';
+        }
+        
+        function cancelEdit() {
+            document.getElementById('edit-form').style.display = 'none';
+            document.getElementById('edit-select').value = '';
+            editEpisodes = [];
+        }
+        
+        // Management functions
+        async function testConnection() {
+            JSONBIN_URL = document.getElementById('jsonbin-url').value;
+            JSONBIN_KEY = document.getElementById('jsonbin-key').value;
+            
+            try {
+                await getData();
+                showAlert('Koneksi berhasil!');
+            } catch (error) {
+                showAlert('Koneksi gagal!', 'error');
+            }
+        }
+        
+        async function clearAllData() {
+            if (!confirm('PERINGATAN: Ini akan menghapus SEMUA data anime. Yakin?')) return;
+            
+            if (await updateData([])) {
+                showAlert('Semua data berhasil dihapus');
+                loadAnimeList();
+            }
+        }
+        
+        function exportData() {
+            const dataStr = JSON.stringify(allAnimeData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'anime_data_export.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            showAlert('Data berhasil diekspor!');
+        }
+        
+        function importData() {
+            document.getElementById('import-file').click();
+        }
+        
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (await updateData(importedData)) {
+                        showAlert('Data berhasil diimpor!');
+                        loadAnimeList();
+                    }
+                } catch (error) {
+                    showAlert('File JSON tidak valid!', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        // Event listeners
+        document.getElementById('add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newAnime = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                thumb: document.getElementById('thumb').value,
+                status: document.getElementById('status').value,
+                year: parseInt(document.getElementById('year').value) || null,
+                genre: document.getElementById('genre').value,
+                rating: parseFloat(document.getElementById('rating').value) || null,
+                description: document.getElementById('description').value,
+                episodes: [...tempEpisodes],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            const data = await getData();
+            data.push(newAnime);
+            
+            if (await updateData(data)) {
+                showAlert(`Anime "${newAnime.title}" berhasil ditambahkan!`);
+                resetForm();
+                switchTab('list');
+                document.querySelectorAll('.tab')[0].click();
+            }
+        });
+        
+        document.getElementById('edit-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const updatedAnime = {
+                id: parseInt(document.getElementById('edit-id').value),
+                title: document.getElementById('edit-title').value,
+                thumb: document.getElementById('edit-thumb').value,
+                status: document.getElementById('edit-status').value,
+                year: parseInt(document.getElementById('edit-year').value) || null,
+                genre: document.getElementById('edit-genre').value,
+                rating: parseFloat(document.getElementById('edit-rating').value) || null,
+                description: document.getElementById('edit-description').value,
+                episodes: [...editEpisodes],
+                updatedAt: new Date().toISOString()
+            };
+            
+            const data = await getData();
+            const index = data.findIndex(anime => anime.id === updatedAnime.id);
+            
+            if (index !== -1) {
+                updatedAnime.createdAt = data[index].createdAt;
+                data[index] = updatedAnime;
+                
+                if (await updateData(data)) {
+                    showAlert(`Anime "${updatedAnime.title}" berhasil diupdate!`);
+                    cancelEdit();
+                    loadAnimeList();
+                }
+            }
+        });
+        
+        // Search and filter event listeners
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('filter-status').addEventListener('change', applyFilters);
+        document.getElementById('sort-by').addEventListener('change', applyFilters);
+        
+        document.getElementById('edit-select').addEventListener('change', (e) => {
+            loadEditForm(e.target.value);
+        });
+    </script>
+</body>
+</html>
